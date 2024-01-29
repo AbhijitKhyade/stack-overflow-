@@ -1,0 +1,36 @@
+.chatbot-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.chatbot-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    cursor: pointer;
+}
+
+.chatbot-container {
+    position: fixed;
+    bottom: 100px;
+    right: 40px;
+}
+
+.programming-tags {
+    display: flex;
+    width: 40px;
+    border-radius: 3px;
+    background-color: red;
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+  
+  .programming-tag {
+    background-color: #5ccc9d;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+  }

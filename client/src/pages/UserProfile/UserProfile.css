@@ -1,0 +1,253 @@
+* {
+    box-sizing: border-box;
+}
+
+.user-details-container {
+    width: 100%;
+    margin-top: 50px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.user-details {
+    display: flex;
+    align-items: flex-start;
+
+}
+
+.user-name {
+    padding-left: 20px;
+}
+
+.user-name p {
+    color: #7e7e7e;
+}
+
+.user-name #color {
+    background: linear-gradient(to right, #ffcc00, #ff6666, #66ff66);
+    -webkit-background-clip: text;
+    color: transparent;
+    font-weight: bold;
+}
+
+.edit-profile-btn {
+    padding: 8px 10px;
+    border: solid 1px #7e7e7e;
+    border-radius: 3px;
+    background-color: white;
+    cursor: pointer;
+    transition: 0.5s all;
+}
+
+.edit-profile-btn:hover {
+    background-color: #000;
+    color: white;
+}
+
+.edit-profile-title {
+    padding: 20px 0px;
+    border-bottom: solid 1px #dbd9d9;
+}
+
+.edit-profile-title-2 {
+    color: grey;
+    font-weight: 400;
+}
+
+.edit-profile-form {
+    padding: 20px;
+    border: solid 1px #dbd9d9;
+    border-radius: 5px;
+}
+
+.edit-profile-form label h3 {
+    margin: 0%;
+    padding: 3px 0px;
+}
+
+.edit-profile-form label p {
+    margin: 0%;
+    padding: 3px 0px;
+}
+
+.edit-profile-form label input,
+.edit-profile-form label textarea {
+    padding: 5px;
+    margin-bottom: 20px;
+    border: solid 1px #dbd9d9;
+    width: 50%;
+}
+
+.user-submit-btn {
+    padding: 12px 10px;
+    background-color: #0a95ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.4s all;
+}
+
+.user-submit-btn:hover {
+    background-color: white;
+    border: 1px solid #0a95ff;
+    color: #0a95ff;
+}
+
+.user-cancel-btn {
+    padding: 14px 10px;
+    color: #0a95ff;
+    background-color: transparent;
+    border: none;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.login-history-container {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.login-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.login-history-table th,
+.login-history-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.login-history-table th {
+    background-color: #f2f2f2;
+}
+
+.login-history-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.login-history-table tr:hover {
+    background-color: #e0e0e0;
+}
+
+
+@media (max-width:600px) {
+    .edit-profile-btn {
+        padding: 5px 4px;
+        width: 160px;
+        font-size: 18px;
+    }
+
+    .edit-profile-title {
+        font-size: 26px;
+    }
+
+    .edit-profile-title-2 {
+        font-weight: 600;
+    }
+
+    .edit-profile-form label input,
+    .edit-profile-form label textarea {
+        width: calc(100% - 30px);
+    }
+
+    .user-submit-btn {
+        padding: 12px 10px;
+        font-size: 18px;
+    }
+
+    .user-cancel-btn {
+        font-size: 16px;
+    }
+
+    .login-history-container {
+        border: 2px solid;
+        width: 100%;
+    }
+
+    .login-history-table {
+        font-size: 11px;
+        margin: 10px 0px 10px 0px;
+    }
+
+    .login-history-table th,
+    .login-history-table td {
+        font-size: 11px;
+    }
+
+    main {
+        display: flex;
+        gap: 20px;
+        box-sizing: border-box;
+    }
+
+    .top {
+        width: 200px;
+        padding: 10px;
+        border-radius: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3px;
+        padding: 10px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .top .counts {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+main {
+    display: flex;
+    gap: 40px;
+    box-sizing: border-box;
+}
+
+.top {
+    width: 250px;
+    /* Set the desired width */
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid lightgray;
+    background-color: #fff;
+    /* Set the background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Add a subtle box shadow */
+    margin-top: 20px;
+    display: flex;
+    gap: 2px;
+    padding: 10px;
+}
+
+.top .counts p {
+    font-size: 16px;
+    font-weight: 700;
+    /* border: 2px solid; */
+    margin-top: 3px;
+}
+
+.top .counts .cnt {
+    font-size: 27px;
+}
+
+.top .counts .badge {
+    background-color: #252323;
+    border-radius: 3px;
+    padding: 5px;
+    color: #fffbe4;
+    border: 1px solid #fffbe4;
+    opacity: 0.87;
+    margin-top: -5px;
+}

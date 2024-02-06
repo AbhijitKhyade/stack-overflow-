@@ -12,6 +12,7 @@ import OTPForm from './pages/OTP Auth/OTPForm';
 import Subscribe from './pages/Subscribe/Subscribe';
 import PaymentSuccess from './pages/Subscribe/PaymentSuccess';
 import PaymentCancel from './pages/Subscribe/PaymentCancel';
+import About from './pages/About/About';
 
 
 
@@ -19,6 +20,7 @@ const AllRoutes = () => {
     return (
         <Routes>
             <Route path='/' element={<Home />} />
+            <Route path='/about' element={<About />} />
             <Route path='/Auth' element={<Auth />} />
             <Route path='/Questions' element={<Questions />} />
             <Route path='/AskQuestion' element={<AskQuestion />} />

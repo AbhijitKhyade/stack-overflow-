@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
@@ -11,27 +11,28 @@ const Subscribe = () => {
   const navigate = useNavigate();
   const User = useSelector((state) => state.currentUserReducer);
   const userId = User?.result?._id;
-  const BASE_URL = "https://stack-overflow-clone-2024.onrender.com";
+  // const BASE_URL = "https://stack-overflow-clone-2024.onrender.com";
+  const BASE_URL = "http://localhost:8080";
   // console.log(User);
   // console.log(User?.result?.subscription);
+  const [todayQue, setTodayQue] = useState("");
 
   const plans = [
-    { name: "Silver", price: "Rs. 100 per month" },
-    { name: "Gold", price: "Rs. 1000 per month" },
+    {
+      name: "Silver",
+      price: "Rs. 1000 per year",
+      description: "20 questions per day",
+      plan_que: 20,
+    },
+    {
+      name: "Gold",
+      price: "Rs. 3000 per year",
+      description: "50 Questions per day",
+      plan_que: 50,
+    },
   ];
 
   const makePayment = async (plan, userId) => {
-    // Check if the user already has a free subscription
-    if (
-      User?.result?.subscription === "Free" &&
-      User?.result?.questionsPostedToday < 2
-    ) {
-      toast.success("You already have free plan");
-      // If yes, navigate directly to AskQuestion page
-      navigate("/AskQuestion");
-      return;
-    }
-    // console.log("plan:", plan);
     const stripe = await loadStripe(
       "pk_test_51OaW4BSJ68wLt3sl9hV9cuE5huHVJZgpWzXHhVI4BqeApWbNE5ZDCqtYE7vzoetadfgjBEy2eQH0ustyenyXi1fi00OL7MI0iJ"
     );
@@ -64,11 +65,10 @@ const Subscribe = () => {
               <h2>{plan.name}</h2>
             </div>
             <p>{plan.price}</p>
+            <p>{plan.description}</p>
             <div className="btn">
               <button onClick={() => makePayment(plan, userId)}>
-                {plan.name === "Free"
-                  ? "Subscribe and Ask 1 Question"
-                  : "Subscribe"}
+                Subscribe
               </button>
             </div>
           </div>

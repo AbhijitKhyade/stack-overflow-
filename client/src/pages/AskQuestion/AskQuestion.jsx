@@ -13,11 +13,14 @@ const AskQuestion = () => {
   const [questionBody, setQuestionBody] = useState("");
   const [questionTags, setQuestionTags] = useState("");
   const [todayQue, setTodayQue] = useState("");
+  const [silverPlan, setSilverPlan] = useState("");
+  const [goldPlan, setGoldPlan] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.currentUserReducer);
-  const BASE_URL = "https://stack-overflow-clone-2024.onrender.com";
+  // const BASE_URL = "https://stack-overflow-clone-2024.onrender.com";
+  const BASE_URL = "http://localhost:8080";
   //fetch user data
   const fetchData = async () => {
     try {
@@ -26,6 +29,8 @@ const AskQuestion = () => {
       );
       console.log("fetched data: ", response?.data?.user);
       setTodayQue(response?.data?.user?.questionsPostedToday);
+      setSilverPlan(response?.data?.user?.questionsPostedSilver);
+      setGoldPlan(response?.data?.user?.questionsPostedGold);
       console.log(todayQue);
       if (todayQue === 0) {
         toast.warning("You already have asked 1 question today", {
@@ -79,40 +84,6 @@ const AskQuestion = () => {
           return;
         }
 
-        // if (response.status === 200) {
-        //   const { questionsPostedToday } = response?.data?.user;
-
-        //   if (questionsPostedToday >= maxQuestionsPerDay) {
-        //     toast.warning(
-        //       `You have already asked ${maxQuestionsPerDay} questions today.`,
-        //       {
-        //         position: "top-left",
-        //         autoClose: 1500,
-        //         hideProgressBar: false,
-        //         closeOnClick: true,
-        //         pauseOnHover: true,
-        //         draggable: true,
-        //         progress: undefined,
-        //         theme: "light",
-        //       }
-        //     );
-        //     toast.warning(
-        //       "Consider upgrading your subscription for more questions.",
-        //       {
-        //         position: "top-left",
-        //         autoClose: 1500,
-        //         hideProgressBar: false,
-        //         closeOnClick: true,
-        //         pauseOnHover: true,
-        //         draggable: true,
-        //         progress: undefined,
-        //         theme: "light",
-        //       }
-        //     );
-        //     navigate("/subscribe");
-        //     return;
-        //   }
-        // }
 
         await dispatch(
           askQuestion(
@@ -206,7 +177,7 @@ const AskQuestion = () => {
               />
             </label>
           </div>
-          {todayQue === 0 ? (
+          {todayQue === 0 && silverPlan === 0 && goldPlan === 0 ? (
             <Link to="/subscribe">
               <input
                 type="submit"

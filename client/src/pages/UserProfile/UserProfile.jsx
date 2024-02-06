@@ -32,7 +32,8 @@ const UserProfile = () => {
   const currentProfile = users.filter((user) => user._id === id)[0];
   const currentUser = useSelector((state) => state.currentUserReducer);
   const [congratulationMessage, setCongratulationMessage] = useState("");
-  const BASE_URL = "https://stack-overflow-clone-2024.onrender.com";
+  // const BASE_URL = "https://stack-overflow-clone-2024.onrender.com";
+  const BASE_URL = "http://localhost:8080";
 
   const fetchLoginHistory = async () => {
     if (currentUser?.result?._id === id) {
@@ -50,12 +51,13 @@ const UserProfile = () => {
 
   const getBadgeCounts = async (userId) => {
     try {
-      console.log(userId);
-      const response = await axios.post(
-        `${BASE_URL}/user/update-badge-count`,
-        { userId }
-      );
-      console.log(response.data);
+      console.log("userId: ", userId);
+
+      console.log("Current user:: ", currentUser?.result?._id);
+      const response = await axios.post(`${BASE_URL}/user/update-badge-count`, {
+        userId,
+      });
+      // console.log(response.data);
       return response.data;
     } catch (error) {
       console.error("Error fetching badge counts:", error);
@@ -64,6 +66,7 @@ const UserProfile = () => {
   };
 
   const updateBadgeCounts = async () => {
+    const Id = currentUser?.result?._id === id ? currentUser?.result?._id : id;
     try {
       const {
         goldBadge,
@@ -72,7 +75,7 @@ const UserProfile = () => {
         goldPoints,
         silverPoints,
         bronzePoints,
-      } = await getBadgeCounts(id);
+      } = await getBadgeCounts(Id);
 
       setBadgeCounts({
         gold: goldBadge,
@@ -117,8 +120,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     fetchLoginHistory();
-
-    const userIdToUpdate = currentUser?.result?._id || id;
+    const userIdToUpdate = currentUser?.result?._id;
 
     updateBadgeCounts(userIdToUpdate);
   }, [id, currentUser?.result?._id]);

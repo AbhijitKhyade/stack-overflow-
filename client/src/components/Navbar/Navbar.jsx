@@ -7,10 +7,10 @@ import { setCurrentUser } from "../../actions/currentUser";
 import logo from "../../assets/logo-stackoverflow.png";
 import search from "../../assets/search-solid.svg";
 import Avatar from "../Avatar/Avatar";
-import "./Navbar.css";
 import LeftSidebar from "../LeftSidebar/LeftSidebar";
 import GoogleTranslate from "../Language/GoogleTranslate";
 
+import "./Navbar.css";
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,6 +19,10 @@ const Navbar = () => {
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
+  };
+
+  const closeDropdown = () => {
+    setIsOpen(false);
   };
 
   var User = useSelector((state) => state.currentUserReducer);
@@ -54,15 +58,10 @@ const Navbar = () => {
           <Link to="/" className=" nav-logo">
             <img src={logo} id="logo" alt="logo" />
           </Link>
-          <Link to="/" className="nav-item nav-btn">
+          <Link to="/about" className="nav-item nav-btn">
             About
           </Link>
-          <Link to="/" className="nav-item nav-btn">
-            Products
-          </Link>
-          <Link to="/" className="nav-item nav-btn">
-            For Teams
-          </Link>
+
           <form>
             <input type="text" placeholder="Search..." className="search-bar" />
             <img src={search} alt="search" width="20" className="search-icon" />
@@ -90,8 +89,9 @@ const Navbar = () => {
                   to={`/Users/${User?.result?._id}`}
                   style={{ color: "white", textDecoration: "none" }}
                 >
-                  {User?.result?.name ? User.result.name.charAt(0).toUpperCase() : ""}
-
+                  {User?.result?.name
+                    ? User.result.name.charAt(0).toUpperCase()
+                    : ""}
                 </Link>
               </Avatar>
 
@@ -108,7 +108,7 @@ const Navbar = () => {
             onClick={toggleDropdown}
           >
             {isOpen ? (
-              <i class="fa-solid fa-xmark"></i>
+              <i class="fa-solid fa-x"></i>
             ) : (
               <i className="fas fa-bars"></i>
             )}
@@ -116,17 +116,19 @@ const Navbar = () => {
         </div>
         {/* dropdown menu */}
         <div className={`dropdown-menu ${isOpen ? "open" : ""}`}>
-          <Link to="/" className="nav-items nav-btns">
+          <Link
+            to="/about"
+            className="nav-items nav-btns"
+            onClick={closeDropdown}
+          >
             About
           </Link>
-          <Link to="/" className="nav-items nav-btns">
-            Products
-          </Link>
-          <Link to="/" className="nav-items nav-btns">
-            For Teams
-          </Link>
           {User === null ? (
-            <Link to="Auth" className="nav-items nav-links1">
+            <Link
+              to="Auth"
+              className="nav-items nav-links1"
+              onClick={closeDropdown}
+            >
               Log in
             </Link>
           ) : (
@@ -147,7 +149,13 @@ const Navbar = () => {
                 </Link>
               </Avatar> */}
 
-              <button className="nav-items nav-links1 " onClick={handleLogout}>
+              <button
+                className="nav-items nav-links1 "
+                onClick={() => {
+                  handleLogout();
+                  closeDropdown();
+                }}
+              >
                 Log Out
               </button>
               {/* <Link to={"user/auth-otp"}>

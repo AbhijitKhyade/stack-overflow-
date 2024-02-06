@@ -11,6 +11,7 @@ const Subscribe = () => {
   const navigate = useNavigate();
   const User = useSelector((state) => state.currentUserReducer);
   const userId = User?.result?._id;
+  const BASE_URL = "https://stack-overflow-clone-2024.onrender.com";
   // console.log(User);
   // console.log(User?.result?.subscription);
 
@@ -34,7 +35,7 @@ const Subscribe = () => {
     const stripe = await loadStripe(
       "pk_test_51OaW4BSJ68wLt3sl9hV9cuE5huHVJZgpWzXHhVI4BqeApWbNE5ZDCqtYE7vzoetadfgjBEy2eQH0ustyenyXi1fi00OL7MI0iJ"
     );
-    const apiurl = `http://localhost:8080/questions/payment/${userId}`;
+    const apiurl = `${BASE_URL}/questions/payment/${userId}`;
     console.log(apiurl);
     const response = await axios.post(apiurl, { userId, ...plan });
     // console.log("response", response);

@@ -17,12 +17,12 @@ const AskQuestion = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.currentUserReducer);
-
+  const BASE_URL = "https://stack-overflow-clone-2024.onrender.com";
   //fetch user data
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/questions/subscription/${user?.result?._id}`
+        `${BASE_URL}/questions/subscription/${user?.result?._id}`
       );
       console.log("fetched data: ", response?.data?.user);
       setTodayQue(response?.data?.user?.questionsPostedToday);
@@ -57,7 +57,7 @@ const AskQuestion = () => {
 
   useEffect(() => {
     fetchData();
-  },[]);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,7 +78,6 @@ const AskQuestion = () => {
           });
           return;
         }
-        
 
         // if (response.status === 200) {
         //   const { questionsPostedToday } = response?.data?.user;

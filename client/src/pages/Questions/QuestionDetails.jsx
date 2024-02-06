@@ -28,7 +28,7 @@ const QuestionDetails = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const url = "https://stack-overflow-2024.onrender.com";
+  const url = "https://stack-overflow-clone-2024.onrender.com";
 
   const handleShare = () => {
     copy(url + location.pathname);

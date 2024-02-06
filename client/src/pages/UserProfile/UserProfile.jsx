@@ -32,12 +32,13 @@ const UserProfile = () => {
   const currentProfile = users.filter((user) => user._id === id)[0];
   const currentUser = useSelector((state) => state.currentUserReducer);
   const [congratulationMessage, setCongratulationMessage] = useState("");
+  const BASE_URL = "https://stack-overflow-clone-2024.onrender.com";
 
   const fetchLoginHistory = async () => {
     if (currentUser?.result?._id === id) {
       try {
         const { data } = await axios.get(
-          `https://stack-overflow-2024.onrender.com/user/login-history/${currentUser?.result?._id}`
+          `${BASE_URL}/user/login-history/${currentUser?.result?._id}`
         );
 
         setLoginHistory(data?.loginHistory);
@@ -51,7 +52,7 @@ const UserProfile = () => {
     try {
       console.log(userId);
       const response = await axios.post(
-        `http://localhost:8080/user/update-badge-count`,
+        `${BASE_URL}/user/update-badge-count`,
         { userId }
       );
       console.log(response.data);

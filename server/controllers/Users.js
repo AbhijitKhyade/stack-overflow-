@@ -43,8 +43,8 @@ const updateBadgeCountController = async (req, res) => {
         const silverCount = await Question.countDocuments({ 'answer.userId': userId });
         const bronzeCount = await Question.countDocuments({ userId });
         console.log(`User ${userId} has asked ${bronzeCount} questions.`);
-        console.log(`User ${userId} has answered ${silverCount} questions.`);
-        console.log(`User ${userId} has voted ${goldCount} questions.`);
+        // console.log(`User ${userId} has answered ${silverCount} questions.`);
+        // console.log(`User ${userId} has voted ${goldCount} questions.`);
         // console.log("before", goldCount, silverCount, bronzeCount);
 
         // Update gold badge count and points
@@ -60,14 +60,15 @@ const updateBadgeCountController = async (req, res) => {
         }
 
         // Update bronze badge count and points
+        
         if (bronzeCount >= 3 && bronzeCount != 0) {
             console.log("bronze");
             bronzeBadge = Math.floor(bronzeCount / 3);
             bronzePoints = bronzeBadge * 3;
         }
 
-        console.log("after", goldBadge, silverBadge, bronzeBadge);
-        console.log("points", goldPoints, silverPoints, bronzePoints);
+        // console.log("after", goldBadge, silverBadge, bronzeBadge);
+        // console.log("points", goldPoints, silverPoints, bronzePoints);
 
         await User.findByIdAndUpdate(userId, {
             $set: {

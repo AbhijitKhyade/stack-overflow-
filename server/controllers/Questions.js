@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 const Questions = require("../models/Questions");
 const userModel = require('../models/userModel');
-const stripe = require('stripe')(process.env.STRIP_SECRET_KEY);
+const stripe = require('stripe')("sk_test_51OaW4BSJ68wLt3slvOhD4XVgKhxPCSbhBbs9uBWYDENlAEpRWay8FEnQ1OdNY23zIBjHFLtZfDP9fiiYDQEwqQsK00WwxMMhl2");
 // const nlp = require('compromise');
 const askQuestionController = async (req, res) => {
     const postQuestionData = req.body;
     const postQuestion = new Questions(postQuestionData);
-    console.log("asked que");
+    // console.log("asked que by :", postQuestionData?.userId);
     try {
         // Save the question to the database
         await postQuestion.save();
@@ -14,9 +14,19 @@ const askQuestionController = async (req, res) => {
         // Update the user's question counts
         const user = await userModel.findById(postQuestionData.userId);
         if (user) {
-            console.log("update var...");
-            user.questionsPostedToday -= 1;
-            user.questionsPostedThisMonth += 1;
+            console.log("update user...");
+            if (user.questionsPostedToday === 1) {
+                console.log("today");
+                user.questionsPostedToday = 0;
+            }
+            if (user.subscription === "Silver") {
+                console.log("silver");
+                user.questionsPostedSilver -= 1;
+            } if (user.subscription === "Gold") {
+                console.log("gold");
+                user.questionsPostedGold -= 1;
+            }
+
             await user.save();
             console.log("updated variable");
         }
@@ -154,7 +164,7 @@ const voteQuestionController = async (req, res) => {
 const subscriptionController = async (req, res) => {
     try {
         const { userId } = req.params;
-        console.log("userid in subscription", userId);
+        // console.log("userid in subscription", userId);
 
         // Assuming you have a User model with a subscription field
         const user = await userModel.findById(userId);
@@ -173,8 +183,8 @@ const subscriptionController = async (req, res) => {
 
 const paymentController = async (req, res) => {
     try {
-        const { name, price, userId } = req.body;
-        console.log(userId);
+        const { name, price, userId, plan_que } = req.body;
+        // console.log(req.body);
         const priceValue = parseFloat(price.replace(/[^\d.]/g, ''));
         // console.log("virtual:", priceValue);
         // console.log("name: ", name, " price:", price);
@@ -201,8 +211,8 @@ const paymentController = async (req, res) => {
                 },
             ],
             mode: 'subscription',
-            success_url: `https://roaring-salmiakki-24cbae.netlify.app/payment-success`,
-            cancel_url: `https://roaring-salmiakki-24cbae.netlify.app/payment-cancel`,
+            success_url: `http://localhost:3000/payment-success`,
+            cancel_url: `http://localhost:3000/payment-cancel`,
             // billing_address_collection: 'required',
             // shipping_address_collection: {
             //     allowed_countries: ['US', 'CA', 'GB', 'IN'], // Add other allowed countries as needed
@@ -213,11 +223,13 @@ const paymentController = async (req, res) => {
         const user = await userModel.findById(userId);
         // console.log("in controller:", user);
         user.subscription = name; // Assuming plan name is Free, Silver, or Gold
+        name === "Silver" ? user.questionsPostedSilver += plan_que : user.questionsPostedGold += plan_que;
+
         // console.log("subscription:", user.subscription);
         user.subscriptionStartDate = new Date();
         await user.save();
-        // console.log("user data saved for subscription");
-
+        const userUp = await userModel.findById(userId);
+        console.log("user updated", userUp);
 
         res.status(200).json({ success: true, id: session.id });
     } catch (error) {

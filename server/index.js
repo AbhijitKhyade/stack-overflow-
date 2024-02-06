@@ -8,15 +8,11 @@ const questionsRoutes = require("./routes/Questions");
 const answersRoutes = require("./routes/Answers");
 const schedule = require('node-schedule');
 const userModel = require('./models/userModel');
-const path = require('path');
-const {dirname} = require('path')
 
-const currentDirname = path.resolve(__dirname);
+
+
 
 const app = express();
-
-// Serve static files from the 'build' directory
-app.use(express.static(path.join(currentDirname, 'build')));
 
 //config dotenv
 dotenv.config();
@@ -51,6 +47,7 @@ const dailyJob = schedule.scheduleJob('0 0 * * *', async () => {
         for (const user of users) {
             const todayDate = new Date().toLocaleDateString();
             const lastAskedDate = user.lastAskedDate || null;
+
 
             if (lastAskedDate !== todayDate) {
                 // If last asked date is not today, reset the count to 1

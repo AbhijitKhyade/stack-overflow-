@@ -4,7 +4,8 @@ import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import "./Subscribe.css";
 import { useSelector } from "react-redux";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Subscribe = () => {
   const navigate = useNavigate();
@@ -14,7 +15,6 @@ const Subscribe = () => {
   // console.log(User?.result?.subscription);
 
   const plans = [
-    { name: "Free", price: "Rs. 0 per month" },
     { name: "Silver", price: "Rs. 100 per month" },
     { name: "Gold", price: "Rs. 1000 per month" },
   ];
@@ -34,7 +34,7 @@ const Subscribe = () => {
     const stripe = await loadStripe(
       "pk_test_51OaW4BSJ68wLt3sl9hV9cuE5huHVJZgpWzXHhVI4BqeApWbNE5ZDCqtYE7vzoetadfgjBEy2eQH0ustyenyXi1fi00OL7MI0iJ"
     );
-    const apiurl = `https://stack-overflow-2024.onrender.com/questions/payment/${userId}`;
+    const apiurl = `http://localhost:8080/questions/payment/${userId}`;
     console.log(apiurl);
     const response = await axios.post(apiurl, { userId, ...plan });
     // console.log("response", response);

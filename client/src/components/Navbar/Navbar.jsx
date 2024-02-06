@@ -90,16 +90,17 @@ const Navbar = () => {
                   to={`/Users/${User?.result?._id}`}
                   style={{ color: "white", textDecoration: "none" }}
                 >
-                  {User.result.name.charAt(0).toUpperCase()}
+                  {User?.result?.name ? User.result.name.charAt(0).toUpperCase() : ""}
+
                 </Link>
               </Avatar>
 
               <button className="nav-item nav-links " onClick={handleLogout}>
                 Log Out
               </button>
-              <Link to={"user/auth-otp"}>
+              {/* <Link to={"user/auth-otp"}>
                 <button className="nav-item nav-links ">Check Auth</button>
-              </Link>
+              </Link> */}
             </>
           )}
           <div
@@ -149,9 +150,9 @@ const Navbar = () => {
               <button className="nav-items nav-links1 " onClick={handleLogout}>
                 Log Out
               </button>
-              <Link to={"user/auth-otp"}>
+              {/* <Link to={"user/auth-otp"}>
                 <button className="nav-items nav-links1 ">Check Auth</button>
-              </Link>
+              </Link> */}
             </>
           )}
         </div>

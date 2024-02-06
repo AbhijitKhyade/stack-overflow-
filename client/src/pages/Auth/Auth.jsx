@@ -5,7 +5,8 @@ import AboutAuth from "./AboutAuth";
 import { signup, login } from "../../actions/auth";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-hot-toast";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Auth = () => {
   const [isSignUp, setSignUp] = useState(false);
@@ -24,15 +25,35 @@ const Auth = () => {
     e.preventDefault();
 
     if (!email && !password) {
-      toast.error("Enter email and password");
+      // toast.error("Enter email and password");
     }
     if (isSignUp) {
       if (!name) {
-        toast.error("Enter your name to continue");
+        alert("Enter name please")
+        // toast.error("Enter your name", {
+        //   position: "top-left",
+        //   autoClose: 1500,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        //   progress: undefined,
+        //   theme: "light",
+        // });
       }
-      dispatch(signup({ name, email, password }, navigate));
+      try {
+        const response = dispatch(signup({ name, email, password }, navigate));
+        console.log("response: ",response);
+      } catch (error) {
+        console.log(error.message);
+      }
     } else {
-      dispatch(login({ email, password }, navigate));
+      try {
+        const response =  dispatch(login({ email, password }, navigate));
+        console.log("response: ",response);
+      } catch (error) {
+        console.log(error.message);
+      }
     }
   };
 

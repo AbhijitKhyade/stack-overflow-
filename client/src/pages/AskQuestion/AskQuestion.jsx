@@ -3,64 +3,117 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { askQuestion } from "../../actions/question";
-import { updateProfile } from "../../actions/users";
-import { toast } from "react-hot-toast";
 import axios from "axios";
 import "./AskQuestion.css";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AskQuestion = () => {
   const [questionTitle, setQuestionTitle] = useState("");
   const [questionBody, setQuestionBody] = useState("");
   const [questionTags, setQuestionTags] = useState("");
+  const [todayQue, setTodayQue] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.currentUserReducer);
 
+  //fetch user data
   const fetchData = async () => {
     try {
+      const response = await axios.get(
+        `http://localhost:8080/questions/subscription/${user?.result?._id}`
+      );
+      console.log("fetched data: ", response?.data?.user);
+      setTodayQue(response?.data?.user?.questionsPostedToday);
+      console.log(todayQue);
+      if (todayQue === 0) {
+        toast.warning("You already have asked 1 question today", {
+          position: "top-left",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        toast.warning("Please subscribe to ask more questions", {
+          position: "top-left",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        return;
+      }
     } catch (error) {
       console.error("Error fetching user subscription:", error.message);
     }
   };
+
   useEffect(() => {
     fetchData();
-  }, [user, dispatch, navigate]);
+  },[]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (user) {
       try {
-        let maxQuestionsPerDay = 1; // Default to 1 question for free plan
-
-        if (user.result.subscription === "Silver") {
-          maxQuestionsPerDay = 10;
-        } else if (user.result.subscription === "Gold") {
-          maxQuestionsPerDay = 50;
+        if (!questionTitle || !questionBody || !questionTags) {
+          // Display alerts for missing fields
+          toast.warning("Please fill in all required fields", {
+            position: "top-left",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          return;
         }
+        
 
-        console.log("Fetching user data...");
-        const response = await axios.get(
-          `https://stack-overflow-2024.onrender.com/questions/subscription/${user.result._id}`
-        );
+        // if (response.status === 200) {
+        //   const { questionsPostedToday } = response?.data?.user;
 
-        if (response.status === 200) {
-          const { questionsPostedToday } = response?.data?.user;
-
-          if (questionsPostedToday >= maxQuestionsPerDay) {
-            toast.error(
-              `You have already asked ${maxQuestionsPerDay} questions today.`
-            );
-            toast.info(
-              "Consider upgrading your subscription for more questions."
-            );
-            navigate("/subscribe");
-            return;
-          }
-        }
-
-        // Rest of the code remains the same
+        //   if (questionsPostedToday >= maxQuestionsPerDay) {
+        //     toast.warning(
+        //       `You have already asked ${maxQuestionsPerDay} questions today.`,
+        //       {
+        //         position: "top-left",
+        //         autoClose: 1500,
+        //         hideProgressBar: false,
+        //         closeOnClick: true,
+        //         pauseOnHover: true,
+        //         draggable: true,
+        //         progress: undefined,
+        //         theme: "light",
+        //       }
+        //     );
+        //     toast.warning(
+        //       "Consider upgrading your subscription for more questions.",
+        //       {
+        //         position: "top-left",
+        //         autoClose: 1500,
+        //         hideProgressBar: false,
+        //         closeOnClick: true,
+        //         pauseOnHover: true,
+        //         draggable: true,
+        //         progress: undefined,
+        //         theme: "light",
+        //       }
+        //     );
+        //     navigate("/subscribe");
+        //     return;
+        //   }
+        // }
 
         await dispatch(
           askQuestion(
@@ -74,18 +127,30 @@ const AskQuestion = () => {
             navigate
           )
         );
-
-        console.log("Question posted successfully.");
-        toast.success("Question posted successfully.");
       } catch (error) {
-        console.error(
-          "Error posting question:",
-          error.message || "Unknown error"
-        );
-        toast.error("Failed to post the question. Please try again.");
+        console.log(error);
+        toast.error(error?.response?.data?.message, {
+          position: "top-left",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     } else {
-      toast.error("Login to post a question");
+      toast.warning("Login to post a question", {
+        position: "top-left",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -98,7 +163,7 @@ const AskQuestion = () => {
   return (
     <div className="ask-question">
       <div className="ask-ques-container">
-        <h1>Ask a public Question</h1>
+        <h1>Ask a public Question {todayQue}</h1>
         <form onSubmit={handleSubmit}>
           <div className="ask-form-container">
             <label htmlFor="ask-ques-title">
@@ -142,8 +207,7 @@ const AskQuestion = () => {
               />
             </label>
           </div>
-          {user?.result?.subscription === "Free" &&
-          user?.result?.questionsPostedToday >= 1 ? (
+          {todayQue !== 0 ? (
             <Link to="/subscribe">
               <input
                 type="submit"

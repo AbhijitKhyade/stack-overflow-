@@ -1,6 +1,8 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import QuestionList from "./QuestionList";
 import "./HomeMainBar.css";
@@ -14,20 +16,19 @@ const HomeMainBar = () => {
 
   const checkAuth = () => {
     if (!user) {
-      alert("Please login to ask a question.");
+      toast.warning("Please login to ask a question", {
+        position: "top-left",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       navigate("/Auth");
     } else {
-      // Check if the user has a silver or gold subscription
-      if (
-        user?.result?.subscription === "Silver" ||
-        user?.result?.subscription === "Gold"
-      ) {
-        // If the user has a valid subscription, proceed to ask the question
-        navigate("/ask-question");
-      } else {
-        // If the user has a different subscription or no subscription, redirect to the subscribe page
-        navigate("/subscribe");
-      }
+      navigate("/AskQuestion");
     }
   };
 

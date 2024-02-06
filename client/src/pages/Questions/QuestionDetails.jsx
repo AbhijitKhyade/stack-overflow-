@@ -14,7 +14,8 @@ import {
   voteQuestion,
 } from "./../../actions/question";
 import "./Questions.css";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const QuestionDetails = () => {
   const [answer, setAnswer] = useState("");
@@ -39,21 +40,39 @@ const QuestionDetails = () => {
   };
 
   const handleUpVote = () => {
-    dispatch(voteQuestion(id, "upVote", User.result._id));
+    dispatch(voteQuestion(id, "upVote", User?.result?._id));
   };
 
   const handleDownVote = () => {
-    dispatch(voteQuestion(id, "downVote", User.result._id));
+    dispatch(voteQuestion(id, "downVote", User?.result?._id));
   };
 
   const handlePostAnswer = (e, answerLength) => {
     e.preventDefault();
     if (User == null) {
-      toast.error("Login or SignUp to answer a question.");
+      toast.warning("Please login to answer a question", {
+        position: "top-left",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       navigate("/Auth");
     } else {
       if (answer === "") {
-        toast.error("Enter an answer before submitting");
+        toast.warning("Enter an answer before submitting", {
+          position: "top-left",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       } else {
         dispatch(
           postAnswer({
@@ -90,7 +109,9 @@ const QuestionDetails = () => {
                         className="votes-icon"
                         onClick={handleUpVote}
                       />
-                      <p>{question?.upVote?.length - question?.downVote?.length}</p>
+                      <p>
+                        {question?.upVote?.length - question?.downVote?.length}
+                      </p>
                       <img
                         src={downvote}
                         alt="downvote"

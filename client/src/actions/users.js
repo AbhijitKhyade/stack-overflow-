@@ -1,4 +1,6 @@
 import * as api from '../api'
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const fetchAllUsers = () => async (dispatch) => {
     try {

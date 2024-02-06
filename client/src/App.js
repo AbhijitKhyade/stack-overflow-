@@ -6,8 +6,9 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchAllQuestions } from './actions/question';
 import { fetchAllUsers } from './actions/users';
-import { Toaster } from 'react-hot-toast';
-import BotComp from './pages/Bot/BotComp';
+// import { Toaster } from 'react-hot-toast';
+// import BotComp from './pages/Bot/BotComp';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
 
@@ -22,7 +23,7 @@ function App() {
       <Router>
         <Navbar />
         <AllRoutes />
-        <Toaster />
+        <ToastContainer />
         {/* <BotComp/> */}
       </Router>
     </>

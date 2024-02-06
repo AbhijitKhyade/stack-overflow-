@@ -206,7 +206,7 @@ const AskQuestion = () => {
               />
             </label>
           </div>
-          {todayQue !== 0 ? (
+          {todayQue === 0 ? (
             <Link to="/subscribe">
               <input
                 type="submit"

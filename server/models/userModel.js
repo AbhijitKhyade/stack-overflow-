@@ -36,7 +36,10 @@ const UserSchema = mongoose.Schema({
     },
     questionsPostedToday: {
         type: Number,
-        default: 0,
+        default: 1,
+    },
+    lastAskedDate: {
+        type: Date,
     },
     questionsPostedThisMonth: {
         type: Number,

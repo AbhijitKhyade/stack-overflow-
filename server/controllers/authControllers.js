@@ -14,7 +14,7 @@ const signUpController = async (req, res) => {
     //existing user
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
-      return res.status(404).send({ success: false, message: "User already Exist." });
+      return res.status(500).send({ success: false, message: "User already Exist." });
     }
 
     //hash password
@@ -31,7 +31,7 @@ const signUpController = async (req, res) => {
     //Create token
     const token = jwt.sign({ email: newUser.email, id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    res.status(200).send({ success: true, result: newUser, token });
+    res.status(200).send({ success: true, result: newUser, token, message:"Registration Successful!" });
 
   } catch (error) {
     console.log(error);
@@ -74,7 +74,7 @@ const loginController = async (req, res) => {
     const token = jwt.sign(
       { email: existingUser.email, id: existingUser._id },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: '7h' }
     );
 
     // store login history
@@ -90,7 +90,7 @@ const loginController = async (req, res) => {
     });
     await userHistory.save();
 
-    res.status(200).json({ result: existingUser, message: "Login Successful!", token });
+    res.status(200).send({ success: true, result: existingUser, message: "Login Successful!", token });
   } catch (error) {
     console.log('Error in loginController:', error);
     res.status(500).send({

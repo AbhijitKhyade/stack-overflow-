@@ -8,15 +8,21 @@ const questionsRoutes = require("./routes/Questions");
 const answersRoutes = require("./routes/Answers");
 const schedule = require('node-schedule');
 const userModel = require('./models/userModel');
+const path = require('path');
+const {dirname} = require('path')
+
+const currentDirname = path.resolve(__dirname);
+
+const app = express();
+
+// Serve static files from the 'build' directory
+app.use(express.static(path.join(currentDirname, 'build')));
 
 //config dotenv
 dotenv.config();
 
 //database config
 mongoDB();
-
-//rest object
-const app = express();
 
 //middleware
 app.use(express.json()); // Body parsing middleware
@@ -28,7 +34,6 @@ app.use("/user", userRoutes);
 app.use("/questions", questionsRoutes);
 app.use("/answer", answersRoutes);
 
-
 //rest api
 // app.get('/mail', (req, res) => {
 //     res.send({ message: 'Welcome to the Stack Overflow Project using MERN' });
@@ -36,6 +41,7 @@ app.use("/answer", answersRoutes);
 
 //PORT
 const PORT = process.env.PORT;
+
 const dailyJob = schedule.scheduleJob('0 0 * * *', async () => {
     try {
         // Find all users
@@ -64,8 +70,7 @@ const dailyJob = schedule.scheduleJob('0 0 * * *', async () => {
     }
 });
 
-
 //run listen
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}...`);
+    console.log(`Server is running on http://localhost:${PORT}...`);
 });

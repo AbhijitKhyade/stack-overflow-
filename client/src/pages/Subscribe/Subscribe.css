@@ -1,0 +1,106 @@
+.subscribe-container {
+    width: 100%;
+    height: 100vh;
+
+    /* background-color: crimson; */
+}
+
+.heading {
+    margin-top: 100px;
+    text-align: center;
+}
+
+.cards {
+    height: 50vh;
+    /* background-color: crimson; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5vw;
+}
+
+.subscribe-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
+    height: 45vh;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+    &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+        color: #333;
+    }
+
+    p {
+        color: #777;
+    }
+}
+
+.head {
+    text-align: center;
+}
+
+.btn {
+    display: flex;
+    justify-content: center;
+}
+
+.btn button {
+    border: none;
+    padding: 7px;
+    font-size: 17px;
+    background-color: rgb(79, 152, 255);
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+
+.btn button:hover{
+    
+    background-color: rgb(27, 114, 235);
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .cards {
+        padding: 20px;
+        margin-top: 50px;
+        height: auto;
+        gap:2vw;
+        margin: 10px 10px 0 10px; 
+      
+    }
+
+    .subscribe-card {
+        width: 100%; 
+       
+    }
+}
+
+@media (max-width: 480px) {
+    .heading {
+        margin-top: 60px;
+
+    }
+
+    .cards{
+        margin-top: -10px;
+        height: auto;
+        flex-wrap: wrap;
+    }
+
+    .subscribe-card {
+        height: auto; /* Allow cards to adjust their height based on content */
+    }
+}
+ 

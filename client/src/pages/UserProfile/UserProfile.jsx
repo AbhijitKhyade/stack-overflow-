@@ -32,6 +32,7 @@ const UserProfile = () => {
   const currentProfile = users.filter((user) => user._id === id)[0];
   const currentUser = useSelector((state) => state.currentUserReducer);
   const [congratulationMessage, setCongratulationMessage] = useState("");
+  // const BASE_URL = "https://stack-overflow-clone-2024.onrender.com";
   const BASE_URL = "http://localhost:8080";
 
   const fetchLoginHistory = async () => {
@@ -50,9 +51,13 @@ const UserProfile = () => {
 
   const getBadgeCounts = async (userId) => {
     try {
+      console.log("userId: ", userId);
+
+      console.log("Current user:: ", currentUser?.result?._id);
       const response = await axios.post(`${BASE_URL}/user/update-badge-count`, {
         userId,
       });
+      // console.log(response.data);
       return response.data;
     } catch (error) {
       console.error("Error fetching badge counts:", error);
@@ -61,10 +66,7 @@ const UserProfile = () => {
   };
 
   const updateBadgeCounts = async () => {
-    const userIdToUpdate = currentUser?.result?._id === id
-      ? currentUser?.result?._id
-      : id;
-
+    const Id = currentUser?.result?._id === id ? currentUser?.result?._id : id;
     try {
       const {
         goldBadge,
@@ -73,7 +75,7 @@ const UserProfile = () => {
         goldPoints,
         silverPoints,
         bronzePoints,
-      } = await getBadgeCounts(userIdToUpdate);
+      } = await getBadgeCounts(Id);
 
       setBadgeCounts({
         gold: goldBadge,
@@ -88,11 +90,17 @@ const UserProfile = () => {
       });
 
       if (goldPoints >= 5) {
-        setCongratulationMessage("Congratulations! You've earned a Gold Badge!");
+        setCongratulationMessage(
+          "Congratulations! You've earned a Gold Badge!"
+        );
       } else if (silverPoints >= 5) {
-        setCongratulationMessage("Congratulations! You've earned a Silver Badge!");
+        setCongratulationMessage(
+          "Congratulations! You've earned a Silver Badge!"
+        );
       } else if (bronzePoints >= 5) {
-        setCongratulationMessage("Congratulations! You've earned a Bronze Badge!");
+        setCongratulationMessage(
+          "Congratulations! You've earned a Bronze Badge!"
+        );
       }
 
       setTimeout(() => {
@@ -103,13 +111,23 @@ const UserProfile = () => {
     }
   };
 
+  const awardBadges = () => {
+    if (badgePoints.gold >= 5) {
+      console.log("Gold Badge Awarded!");
+      updateBadgeCounts();
+    }
+  };
+
   useEffect(() => {
     fetchLoginHistory();
-    updateBadgeCounts();
+    const userIdToUpdate = currentUser?.result?._id;
 
+    updateBadgeCounts(userIdToUpdate);
   }, [id, currentUser?.result?._id]);
 
-
+  useEffect(() => {
+    awardBadges();
+  }, [badgeCounts]);
 
   return (
     <div className="home-container-1">
@@ -131,7 +149,7 @@ const UserProfile = () => {
                 <h1>{currentProfile?.name}</h1>
                 <p id="color">{congratulationMessage}</p>
                 <p>
-                  <i className="fa-solid fa-cake-candles"></i> Joined{" "}
+                  <i class="fa-solid fa-cake-candles"></i> Joined{" "}
                   {moment(currentProfile?.joinedOn).fromNow()}
                 </p>
               </div>
@@ -142,7 +160,7 @@ const UserProfile = () => {
                 onClick={() => setSwitch(true)}
                 className="edit-profile-btn"
               >
-                <i className="fa-solid fa-pen"></i> Edit Profile
+                <i class="fa-solid fa-pen"></i> Edit Profile
               </button>
             )}
           </div>
@@ -194,7 +212,7 @@ const UserProfile = () => {
           )}
         </section>
 
-        {currentUser?.result._id === id && (
+        {currentUser?.result && (
           <div>
             <div>
               <h1>Badges Earned</h1>

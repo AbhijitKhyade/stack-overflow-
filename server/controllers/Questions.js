@@ -120,8 +120,9 @@ const voteQuestionController = async (req, res) => {
 
 const subscriptionController = async (req, res) => {
   try {
+
     const { userId } = req.params;
-    // console.log("userid in subscription", userId);
+    console.log("userid in subscription", userId);
 
     // Assuming you have a User model with a subscription field
     const user = await userModel.findById(userId);
@@ -141,7 +142,7 @@ const subscriptionController = async (req, res) => {
 const paymentController = async (req, res) => {
   try {
     const { name, price, userId, plan_que } = req.body;
-   
+
     const priceValue = parseFloat(price.replace(/[^\d.]/g, ""));
     const product = await stripe.products.create({
       name: name,
@@ -155,9 +156,9 @@ const paymentController = async (req, res) => {
     const recurringPrice = await stripe.prices.create({
       product: product.id,
       recurring: {
-        interval: "month", // Set the interval for monthly subscription
+        interval: "year", // Set the interval for monthly subscription
       },
-      unit_amount: Math.round(priceValue * 1000000), // Convert price to cents
+      unit_amount: Math.round(priceValue * 100), // Convert price to cents
       currency: "inr",
     });
     const session = await stripe.checkout.sessions.create({
@@ -170,12 +171,15 @@ const paymentController = async (req, res) => {
       ],
       mode: "subscription",
       success_url: `https://stack-overflow-1728.vercel.app/payment-success`,
+      // success_url: `http://localhost:3000/payment-success`,
       cancel_url: `https://stack-overflow-1728.vercel.app/payment-cancel`,
-      billing_address_collection: 'required',
-      shipping_address_collection: {
-          allowed_countries: ['US', 'CA', 'GB', 'IN'], // Add other allowed countries as needed
-      },
+      // cancel_url: `http://localhost:3000/payment-cancel`,
+      // billing_address_collection: 'required',
+      // shipping_address_collection: {
+      //   allowed_countries: ['US', 'CA', 'GB', 'IN'], // Add other allowed countries as needed
+      // },
     });
+    console.log("Session:", session);
 
     // Update user's subscription information
     const user = await userModel.findById(userId);

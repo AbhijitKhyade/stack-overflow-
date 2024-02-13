@@ -88,3 +88,36 @@ Login History:
 System captures information such as browser type, OS, system type, and IP address during user login.
 Login history is stored in the database and displayed to the user.
 
+# Deployment
+
+## Backend Deployment on Render:
+1)Sign up or log in to Render.
+2)Create a new web service.
+3)Choose your preferred backend framework (e.g., Node.js, Django, Flask).
+4)Configure your service settings (e.g., environment variables, ports).
+5)Connect your Git repository.
+6)Deploy your backend application.
+
+## Frontend Deployment on Vercel:
+1)Sign up or log in to Vercel.
+2)Import your frontend project from your Git repository.
+3)Configure your project settings (e.g., environment variables, build settings).
+4)Set up custom domains if needed.
+5)Deploy your frontend application.
+
+Steps: 
+
+### Backend (Render):
+Sign up/log in.
+Create service.
+Choose backend framework.
+Configure settings.
+Connect Git.
+Deploy.
+
+### Frontend (Vercel):
+Sign up/log in.
+Import project.
+Configure settings.
+Set up custom domains.
+Deploy.

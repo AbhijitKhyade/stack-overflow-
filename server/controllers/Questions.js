@@ -222,8 +222,8 @@ const paymentController = async (req, res) => {
         },
       ],
       mode: "subscription",
-      success_url: `https://stack-verflow-clone-2024.netlify.app//payment-success`,
-      cancel_url: `https://stack-verflow-clone-2024.netlify.app//payment-cancel`,
+      success_url: `https://stack-overflow-1728.vercel.app/payment-success`,
+      cancel_url: `https://stack-overflow-1728.vercel.app/payment-cancel`,
       // billing_address_collection: 'required',
       // shipping_address_collection: {
       //     allowed_countries: ['US', 'CA', 'GB', 'IN'], // Add other allowed countries as needed

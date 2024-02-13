@@ -4,28 +4,28 @@
 This project is a StackOverflow clone with additional features including subscription plans, payment gateway integration, a reward system, multi-language support, and user login information tracking.
 
 Getting Started
-1. Clone the Repository
+**1. Clone the Repository**
 Clone the project repository to your local machine using the command:
 
 git clone https://github.com/your-username/stackoverflow-clone.git
 cd stackoverflow-clone
 
-2. Install Dependencies
+**2. Install Dependencies**
 Install project dependencies using:
 npm install
 
-3. Environment Variables
+**3. Environment Variables**
 Create a .env file and configure the following variables:
 DATABASE_URL=your_database_url
 PORT=your_port
 
-4. Run the Application
+**4. Run the Application**
 Start the application using:npm start
 
-5. Access the Application
+**5. Access the Application**
 Open your browser and navigate to http://localhost:3000
 
-Project Features
+_Project Features_
 1. CRUD Operation
 
 Create:

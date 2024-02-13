@@ -67,35 +67,20 @@ const ProfileBio = ({ currentProfile }) => {
         </div>
       </div>
       {currentUser?.result?._id === id && (
-        <div style={{ width: "50%" }}>
-          <div
-            style={{
-              textAlign: "center",
-              fontWeight: "700",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-            >
+        <div className='subscription' >
+          <div className="main-bar">
+            <div className="main-box">
               <div>Subscription Plan</div>
               <div>
                 <Link to={"/subscribe"}>
                   {" "}
-                  <input style={{ height: '35px', margin: '1px' }} type="button" className="user-submit-btn" value={'Add Plan'} />
+                  <input  type="button" className="user-submit-btn" value={'Add Plan'} />
                 </Link>
               </div>
             </div>
           </div>
           <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-              padding: "3px",
-            }}
+            className="content"
           >
             <div>
               Today:{" "}

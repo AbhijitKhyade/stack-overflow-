@@ -15,9 +15,12 @@
 }
 
 
-@media screen and (max-width: 760px) {
+@media screen and (max-width: 1000px) {
   .home-container-2 {
     max-width: 100%;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
   }
 }

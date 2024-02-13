@@ -7,7 +7,6 @@ import { setCurrentUser } from "../../actions/currentUser";
 import logo from "../../assets/logo-stackoverflow.png";
 import search from "../../assets/search-solid.svg";
 import Avatar from "../Avatar/Avatar";
-import LeftSidebar from "../LeftSidebar/LeftSidebar";
 import GoogleTranslate from "../Language/GoogleTranslate";
 
 import "./Navbar.css";
@@ -49,12 +48,6 @@ const Navbar = () => {
     <>
       <nav className="main-nav">
         <div className="navbar">
-          <div
-            className={`toggleBtn ${isOpen ? "open" : ""}`}
-
-          >
-            <i className="fas fa-bars"></i>
-          </div>
           <Link to="/" className=" nav-logo">
             <img src={logo} id="logo" alt="logo" />
           </Link>
@@ -68,7 +61,9 @@ const Navbar = () => {
           </form>
           <div className="language">
             <button onClick={() => window.location.reload()}>Language</button>
-            <GoogleTranslate />
+            <div className="google-ele">
+              <GoogleTranslate />
+            </div>
           </div>
 
           {User === null ? (
@@ -123,6 +118,29 @@ const Navbar = () => {
           >
             About
           </Link>
+          <Link
+            to="/Questions"
+            className="nav-items nav-btns"
+            onClick={closeDropdown}
+          >
+            Questions
+          </Link>
+          <Link
+            to="/Tags"
+            className="nav-items nav-btns"
+            onClick={closeDropdown}
+          >
+            Tags
+          </Link>
+          <Link
+            to="/Users"
+            className="nav-items nav-btns"
+            onClick={closeDropdown}
+          >
+            Users
+          </Link>
+
+
           {User === null ? (
             <Link
               to="Auth"

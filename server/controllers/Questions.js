@@ -117,57 +117,6 @@ const voteQuestionController = async (req, res) => {
   }
 };
 
-// function getAnswer(question) {
-//     // Use compromise to process the question and generate an answer
-//     const doc = nlp(question);
-//     // Customize this logic based on your use case
-//     const answer = doc.sentences().out('text');
-//     return answer;
-// }
-// const askOpenAIController = async (req, res) => {
-//     const { question } = req.body;
-//     console.log('Incoming Request Body:', req.body);
-
-//     console.log(question);
-
-//     // try {
-//     //     const response = await axios.post(
-//     //         'https://api.openai.com/v1/engines/davinci-codex/completions',
-//     //         {
-//     //             prompt: question,
-//     //             max_tokens: 100,
-//     //         },
-//     //         {
-//     //             headers: {
-//     //                 'Content-Type': 'application/json',
-//     //                 'Authorization': 'Bearer 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',
-//     //             },
-//     //         }
-//     //     );
-//     //     console.log("entered");
-
-//     //     const answer = response.data.choices[0]?.text || "No answer from OpenAI.";
-//     //     console.log('answer:', answer);
-
-//     //     res.json({ answer });
-//     // } catch (error) {
-//     //     res.status(500).json({ message: "Error while answering..." });
-//     // }
-
-//     try {
-//         const { question } = req.body;
-//         console.log('Incoming Request Body:', req.body);
-//         console.log('Question:', question);
-
-//         const answer = getAnswer(question);
-//         console.log('Answer:', answer);
-
-//         res.json({ answer });
-//     } catch (error) {
-//         console.error('Error while answering the question:', error.message);
-//         res.status(500).json({ message: "Error while answering..." });
-//     }
-// }
 
 const subscriptionController = async (req, res) => {
   try {
@@ -192,10 +141,8 @@ const subscriptionController = async (req, res) => {
 const paymentController = async (req, res) => {
   try {
     const { name, price, userId, plan_que } = req.body;
-    // console.log(req.body);
+   
     const priceValue = parseFloat(price.replace(/[^\d.]/g, ""));
-    // console.log("virtual:", priceValue);
-    // console.log("name: ", name, " price:", price);
     const product = await stripe.products.create({
       name: name,
       type: "service",
@@ -210,7 +157,7 @@ const paymentController = async (req, res) => {
       recurring: {
         interval: "month", // Set the interval for monthly subscription
       },
-      unit_amount: Math.round(priceValue * 100), // Convert price to cents
+      unit_amount: Math.round(priceValue * 1000000), // Convert price to cents
       currency: "inr",
     });
     const session = await stripe.checkout.sessions.create({

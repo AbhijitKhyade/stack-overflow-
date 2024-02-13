@@ -1,4 +1,3 @@
-<img width="960" alt="image" src="https://github.com/AbhijitKhyade/stack-overflow-/assets/129264746/2fb822a7-4e8c-4a12-bbab-13cae82c6bcf">
 # Stack Overflow Clone
 
 This project is a StackOverflow clone with additional features including subscription plans, payment gateway integration, a reward system, multi-language support, and user login information tracking.

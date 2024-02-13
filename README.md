@@ -2,6 +2,8 @@
 
 This project is a StackOverflow clone with additional features including subscription plans, payment gateway integration, a reward system, multi-language support, and user login information tracking.
 
+## check the website: https://stack-overflow-1728.vercel.app/
+
 # Homepage
 
 <img width="960" alt="Screenshot 2024-02-14 011204" src="https://github.com/AbhijitKhyade/stack-overflow-/assets/129264746/a6d19f0e-5569-417b-9e66-6b688f216962">

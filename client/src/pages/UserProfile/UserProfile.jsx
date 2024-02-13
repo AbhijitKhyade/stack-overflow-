@@ -32,8 +32,8 @@ const UserProfile = () => {
   const currentProfile = users.filter((user) => user._id === id)[0];
   const currentUser = useSelector((state) => state.currentUserReducer);
   const [congratulationMessage, setCongratulationMessage] = useState("");
-  // const BASE_URL = "https://stack-overflow-clone-2024.onrender.com";
-  const BASE_URL = "http://localhost:8080";
+  const BASE_URL = "https://stack-overflow-clone-2024.onrender.com";
+  // const BASE_URL = "http://localhost:8080";
 
   const fetchLoginHistory = async () => {
     if (currentUser?.result?._id === id) {

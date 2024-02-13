@@ -19,8 +19,8 @@ const AskQuestion = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.currentUserReducer);
-  // const BASE_URL = "https://stack-overflow-clone-2024.onrender.com";
-  const BASE_URL = "http://localhost:8080";
+  const BASE_URL = "https://stack-overflow-clone-2024.onrender.com";
+  // const BASE_URL = "http://localhost:8080";
   //fetch user data
   const fetchData = async () => {
     try {

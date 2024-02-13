@@ -12,8 +12,8 @@ const ProfileBio = ({ currentProfile }) => {
   const [goldPlan, setGoldPlan] = useState(0);
   const { id } = useParams();
 
-  // const BASE_URL = "https://stack-overflow-clone-2024.onrender.com";
-  const BASE_URL = "http://localhost:8080";
+  const BASE_URL = "https://stack-overflow-clone-2024.onrender.com";
+  // const BASE_URL = "http://localhost:8080";
 
   const fetchData = async () => {
     try {

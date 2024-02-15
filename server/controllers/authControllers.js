@@ -31,7 +31,7 @@ const signUpController = async (req, res) => {
     //Create token
     const token = jwt.sign({ email: newUser.email, id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    res.status(200).send({ success: true, result: newUser, token, message:"Registration Successful!" });
+    res.status(200).send({ success: true, result: newUser, token, message: "Registration Successful!" });
 
   } catch (error) {
     console.log(error);
@@ -82,7 +82,7 @@ const loginController = async (req, res) => {
     const ip = req.ip;
     const userHistory = await UserHistory.findOne({ userId: existingUser._id });
     // If the user history document exists, append to the loginHistory array
-    userHistory.userLoginHistory.push({
+    userHistory?.userLoginHistory.push({
       browser: req.useragent.browser,
       os: req.useragent.os,
       device,

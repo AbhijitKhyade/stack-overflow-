@@ -15,25 +15,26 @@ const ProfileBio = ({ currentProfile }) => {
   const BASE_URL = "https://stack-overflow-clone-2024.onrender.com";
   // const BASE_URL = "http://localhost:8080";
 
-  const fetchData = async () => {
-    try {
-      const Id =
-        currentUser?.result?._id === id ? currentUser?.result?._id : id;
-      const apiUrl = `${BASE_URL}/questions/subscription/${Id}`;
-      const response = await axios.get(apiUrl);
-      console.log("fetched data: ", response?.data?.user);
 
-      setTodayQue(response?.data?.user?.questionsPostedToday);
-      setSilverPlan(response?.data?.user?.questionsPostedSilver);
-      setGoldPlan(response?.data?.user?.questionsPostedGold);
-    } catch (error) {
-      console.error("Error fetching user subscription:", error.message);
-    }
-  };
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const Id = currentUser?.result?._id === id ? currentUser?.result?._id : id;
+        const apiUrl = `${BASE_URL}/questions/subscription/${Id}`;
+        const response = await axios.get(apiUrl);
+        // console.log("fetched data: ", response?.data?.user);
+
+        setTodayQue(response?.data?.user?.questionsPostedToday);
+        setSilverPlan(response?.data?.user?.questionsPostedSilver);
+        setGoldPlan(response?.data?.user?.questionsPostedGold);
+      } catch (error) {
+        console.error("Error fetching user subscription:", error.message);
+      }
+    };
+
     fetchData();
-  }, []);
+  }, [currentUser?.result?._id, id]);
 
   return (
     <div
@@ -74,7 +75,7 @@ const ProfileBio = ({ currentProfile }) => {
               <div>
                 <Link to={"/subscribe"}>
                   {" "}
-                  <input  type="button" className="user-submit-btn" value={'Add Plan'} />
+                  <input type="button" className="user-submit-btn" value={'Add Plan'} />
                 </Link>
               </div>
             </div>
@@ -82,20 +83,17 @@ const ProfileBio = ({ currentProfile }) => {
           <div
             className="content"
           >
-            <div>
+            {/* <div>
               Today:{" "}
               {todayQue === 1
                 ? `You can ask Question`
                 : `You have asked a question`}
-            </div>
+            </div> */}
             <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-              }}
+
             >
               <div>
-                Subscription:{" "}
+                <b>Subscription:</b>{"  "}
                 {silverPlan !== 0
                   ? "Silver Plan"
                   : goldPlan !== 0
@@ -103,7 +101,7 @@ const ProfileBio = ({ currentProfile }) => {
                     : "No Plan"}
               </div>
               <div>
-                Questions Remaining:{" "}
+                <b>Questions Remaining</b>:{" "}
                 {silverPlan !== 0 ? silverPlan : goldPlan !== 0 ? goldPlan : 0}{" "}
               </div>
             </div>

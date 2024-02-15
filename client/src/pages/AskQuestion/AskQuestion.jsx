@@ -27,7 +27,7 @@ const AskQuestion = () => {
       const response = await axios.get(
         `${BASE_URL}/questions/subscription/${user?.result?._id}`
       );
-      console.log("fetched data: ", response?.data?.user);
+      // console.log("fetched data: ", response?.data?.user);
       setTodayQue(response?.data?.user?.questionsPostedToday);
       setSilverPlan(response?.data?.user?.questionsPostedSilver);
       setGoldPlan(response?.data?.user?.questionsPostedGold);
@@ -178,13 +178,17 @@ const AskQuestion = () => {
             </label>
           </div>
           {todayQue === 0 && silverPlan === 0 && goldPlan === 0 ? (
-            <Link to="/subscribe">
-              <input
-                type="submit"
-                value="Subscribe for more questions"
-                className="review-btn"
-              />
-            </Link>
+
+            <>
+              <p style={{ color: 'crimson' }}>You asked one question today , Subscribe to ask more questions</p>
+              <Link to="/subscribe">
+                <input
+                  type="submit"
+                  value="Subscribe for more questions"
+                  className="review-btn"
+                />
+              </Link>
+            </>
           ) : (
             <input
               type="submit"

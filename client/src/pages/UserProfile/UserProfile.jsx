@@ -34,100 +34,88 @@ const UserProfile = () => {
   const [congratulationMessage, setCongratulationMessage] = useState("");
   const BASE_URL = "https://stack-overflow-clone-2024.onrender.com";
   // const BASE_URL = "http://localhost:8080";
+  // console.log("user:", currentProfile);
+  // console.log("Redux: ", currentUser);
+  // console.log("user id:", id);
 
-  const fetchLoginHistory = async () => {
-    if (currentUser?.result?._id === id) {
-      try {
-        const { data } = await axios.get(
-          `${BASE_URL}/user/login-history/${currentUser?.result?._id}`
-        );
-
-        setLoginHistory(data?.loginHistory);
-      } catch (error) {
-        console.error("Error fetching login history:", error);
-      }
-    }
-  };
-
-  const getBadgeCounts = async (userId) => {
-    try {
-      console.log("userId: ", userId);
-
-      console.log("Current user:: ", currentUser?.result?._id);
-      const response = await axios.post(`${BASE_URL}/user/update-badge-count`, {
-        userId,
-      });
-      // console.log(response.data);
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching badge counts:", error);
-      return {};
-    }
-  };
-
-  const updateBadgeCounts = async () => {
-    const Id = currentUser?.result?._id === id ? currentUser?.result?._id : id;
-    try {
-      const {
-        goldBadge,
-        silverBadge,
-        bronzeBadge,
-        goldPoints,
-        silverPoints,
-        bronzePoints,
-      } = await getBadgeCounts(Id);
-
-      setBadgeCounts({
-        gold: goldBadge,
-        silver: silverBadge,
-        bronze: bronzeBadge,
-      });
-
-      setBadgePoints({
-        gold: goldPoints,
-        silver: silverPoints,
-        bronze: bronzePoints,
-      });
-
-      if (goldPoints >= 5) {
-        setCongratulationMessage(
-          "Congratulations! You've earned a Gold Badge!"
-        );
-      } else if (silverPoints >= 5) {
-        setCongratulationMessage(
-          "Congratulations! You've earned a Silver Badge!"
-        );
-      } else if (bronzePoints >= 5) {
-        setCongratulationMessage(
-          "Congratulations! You've earned a Bronze Badge!"
-        );
-      }
-
-      setTimeout(() => {
-        setCongratulationMessage("");
-      }, 3600000);
-    } catch (error) {
-      console.error("Error updating badge counts on the frontend:", error);
-    }
-  };
-
-  const awardBadges = () => {
-    if (badgePoints.gold >= 5) {
-      console.log("Gold Badge Awarded!");
-      updateBadgeCounts();
-    }
-  };
-
+  //fetch login history
   useEffect(() => {
+    const fetchLoginHistory = async () => {
+      if (currentUser?.result?._id === id) {
+        try {
+          const { data } = await axios.get(
+            `${BASE_URL}/user/login-history/${currentUser?.result?._id}`
+          );
+
+          setLoginHistory(data?.loginHistory);
+        } catch (error) {
+          console.error("Error fetching login history:", error);
+        }
+      }
+    };
     fetchLoginHistory();
-    const userIdToUpdate = currentUser?.result?._id;
+  }, [currentUser?.result?._id, id]);
 
-    updateBadgeCounts(userIdToUpdate);
-  }, [id, currentUser?.result?._id]);
 
+  //fetch badge
   useEffect(() => {
-    awardBadges();
-  }, [badgeCounts]);
+    const getBadgeCounts = async (Id) => {
+      try {
+        // console.log("userId: ", Id);
+
+        // console.log("Current user:: ", currentUser?.result?._id);
+        const response = await axios.post(`${BASE_URL}/user/update-badge-count/${Id}`);
+        // console.log("badge response:", response?.data?.data?.badges);
+        return response?.data?.data?.badges;
+      } catch (error) {
+        console.error("Error fetching badge counts:", error);
+      }
+    };
+
+    const updateBadgeCounts = async () => {
+      const Id = currentUser?.result?._id === id ? currentUser?.result?._id : id;
+      try {
+        const { gold, silver, bronze } = await getBadgeCounts(Id);
+        // console.log("returned data:", { gold, silver, bronze });
+        setBadgeCounts({
+          gold: gold.count,
+          silver: silver.count,
+          bronze: bronze.count,
+        });
+
+        setBadgePoints({
+          gold: gold.points,
+          silver: silver.points,
+          bronze: bronze.points,
+        });
+
+        // if (goldPoints >= 5) {
+        //   setCongratulationMessage(
+        //     "Congratulations! You've earned a Gold Badge!"
+        //   );
+        // } else if (silverPoints >= 5) {
+        //   setCongratulationMessage(
+        //     "Congratulations! You've earned a Silver Badge!"
+        //   );
+        // } else if (bronzePoints >= 5) {
+        //   setCongratulationMessage(
+        //     "Congratulations! You've earned a Bronze Badge!"
+        //   );
+        // }
+
+        // setTimeout(() => {
+        //   setCongratulationMessage("");
+        // }, 360000);
+
+      } catch (error) {
+        console.error("Error updating badge counts on the frontend:", error);
+      }
+    };
+    getBadgeCounts();
+    updateBadgeCounts();
+  }, [currentUser?.result?._id, id]);
+
+
 
   return (
     <div className="home-container-1">
@@ -213,53 +201,73 @@ const UserProfile = () => {
         </section>
 
         {currentUser?.result && (
-          <div>
-            <div>
-              <h1>Badges Earned</h1>
+
+          <>
+            <div className="badge-details">
+              <div className="gold">
+                <h2>Gold Badge Criteria</h2>
+                <p>User will get gold badge when he or she has 5 or more votes on his or her asked question </p>
+                <p>Points gained is 10 on one gold badge</p>
+              </div>
+              <div className="silver">
+                <h2>Silver Badge Criteria</h2>
+                <p>User will get silver badge when he or she answers to 4 or more questions </p>
+                <p>Points gained is 4 on one silver badge</p>
+              </div>
+              <div className="bronze">
+                <h2>Bronze Badge Criteria</h2>
+                <p>User will get bronze badge when he or she asks 3 or more questions </p>
+                <p>Points gained is 3 on one bronze badge</p>
+              </div>
             </div>
-            <main>
-              <div className="top">
-                <div className="img-icon">
-                  <img src={gold} alt="gold" width={"65px"} height={"65px"} />
-                </div>
-                <div className="counts">
-                  <p className="cnt">{badgeCounts.gold}</p>
-                  <p className="badge">gold badges</p>
-                  <p className="points">{badgePoints.gold} points</p>
-                </div>
+            <div>
+              <div>
+                <h1>Badges Earned</h1>
               </div>
-              <div className="top">
-                <div className="img-icon">
-                  <img
-                    src={silver}
-                    alt="silver"
-                    width={"65px"}
-                    height={"65px"}
-                  />
+              <main>
+                <div className="top">
+                  <div className="img-icon">
+                    <img src={gold} alt="gold" width={"65px"} height={"65px"} />
+                  </div>
+                  <div className="counts">
+                    <p className="cnt">{badgeCounts.gold}</p>
+                    <p className="badge">gold badges</p>
+                    <p className="points">{badgePoints.gold} points</p>
+                  </div>
                 </div>
-                <div className="counts">
-                  <p className="cnt">{badgeCounts.silver}</p>
-                  <p className="badge">silver badges</p>
-                  <p className="points">{badgePoints.silver} points</p>
+                <div className="top">
+                  <div className="img-icon">
+                    <img
+                      src={silver}
+                      alt="silver"
+                      width={"65px"}
+                      height={"65px"}
+                    />
+                  </div>
+                  <div className="counts">
+                    <p className="cnt">{badgeCounts.silver}</p>
+                    <p className="badge">silver badges</p>
+                    <p className="points">{badgePoints.silver} points</p>
+                  </div>
                 </div>
-              </div>
-              <div className="top">
-                <div className="img-icon">
-                  <img
-                    src={bronze}
-                    alt="bronze"
-                    width={"65px"}
-                    height={"65px"}
-                  />
+                <div className="top">
+                  <div className="img-icon">
+                    <img
+                      src={bronze}
+                      alt="bronze"
+                      width={"65px"}
+                      height={"65px"}
+                    />
+                  </div>
+                  <div className="counts">
+                    <p className="cnt">{badgeCounts.bronze}</p>
+                    <p className="badge">bronze badges</p>
+                    <p className="points">{badgePoints.bronze} points</p>
+                  </div>
                 </div>
-                <div className="counts">
-                  <p className="cnt">{badgeCounts.bronze}</p>
-                  <p className="badge">bronze badges</p>
-                  <p className="points">{badgePoints.bronze} points</p>
-                </div>
-              </div>
-            </main>
-          </div>
+              </main>
+            </div>
+          </>
         )}
       </div>
     </div>

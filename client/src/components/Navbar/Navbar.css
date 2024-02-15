@@ -210,35 +210,46 @@
 }
 
 .language .google-ele #google_translate_element select {
-    padding: 8px; /* Adjust padding as needed */
-    font-size: 13px; /* Adjust font size as needed */
-    border: 1px solid #ccc; /* Add border */
-    border-radius: 5px; /* Add border radius for rounded corners */
-    background-color: #fff; /* Set background color */
-    color: #333; /* Set text color */
-    appearance: none; /* Remove default dropdown arrow */
-    -webkit-appearance: none; /* For older versions of Chrome */
-    -moz-appearance: none; /* For Firefox */
+    padding: 8px;
+    /* Adjust padding as needed */
+    font-size: 13px;
+    /* Adjust font size as needed */
+    border: 1px solid #ccc;
+    /* Add border */
+    border-radius: 5px;
+    /* Add border radius for rounded corners */
+    background-color: #fff;
+    /* Set background color */
+    color: #333;
+    /* Set text color */
+    appearance: none;
+    /* Remove default dropdown arrow */
+    -webkit-appearance: none;
+    /* For older versions of Chrome */
+    -moz-appearance: none;
+    /* For Firefox */
 }
 
 /* Add styles for when the select is hovered or focused */
 .language .google-ele #google_translate_element select:hover,
 .language .google-ele #google_translate_element select:focus {
-    border-color: #007bff; /* Change border color on hover/focus */
-    outline: none; /* Remove default focus outline */
+    border-color: #007bff;
+    /* Change border color on hover/focus */
+    outline: none;
+    /* Remove default focus outline */
 }
 
 .language .google-ele .VIpgJd-ZVi9od-l4eHX-hSRGPd,
-    .VIpgJd-ZVi9od-l4eHX-hSRGPd:link,
-    .VIpgJd-ZVi9od-l4eHX-hSRGPd:visited,
-    .VIpgJd-ZVi9od-l4eHX-hSRGPd:hover,
-    .VIpgJd-ZVi9od-l4eHX-hSRGPd:active {
-        font-size: 11px;
-        font-weight: bold;
-        color: #444;
-        text-decoration: none;
-        display: none;
-    }
+.VIpgJd-ZVi9od-l4eHX-hSRGPd:link,
+.VIpgJd-ZVi9od-l4eHX-hSRGPd:visited,
+.VIpgJd-ZVi9od-l4eHX-hSRGPd:hover,
+.VIpgJd-ZVi9od-l4eHX-hSRGPd:active {
+    font-size: 11px;
+    font-weight: bold;
+    color: #444;
+    text-decoration: none;
+    display: none;
+}
 
 
 
@@ -250,7 +261,7 @@
 
     .navbar {
         width: 100%;
-        padding: 2px;
+        padding: 0px;
     }
 
     .nav-logo {
@@ -262,10 +273,21 @@
         height: 35px;
     }
 
+    .subscription .main-bar .main-box {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .user-submit-btn {
+        padding: 6px 11px;
+        font-size: 14px;
+    }
+
     .language {
         display: flex;
-        gap: 20px;
+        gap: 1px;
         align-items: center;
+        margin-left: -33px;
     }
 
     .language button {

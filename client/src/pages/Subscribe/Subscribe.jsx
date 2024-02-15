@@ -1,21 +1,15 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import "./Subscribe.css";
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 
 const Subscribe = () => {
-  const navigate = useNavigate();
   const User = useSelector((state) => state.currentUserReducer);
   const userId = User?.result?._id;
   const BASE_URL = "https://stack-overflow-clone-2024.onrender.com";
   // const BASE_URL = "http://localhost:8080";
-  // console.log(User);
-  // console.log(User?.result?.subscription);
-  const [todayQue, setTodayQue] = useState("");
 
   const plans = [
     {
@@ -37,16 +31,16 @@ const Subscribe = () => {
       "pk_test_51OaW4BSJ68wLt3sl9hV9cuE5huHVJZgpWzXHhVI4BqeApWbNE5ZDCqtYE7vzoetadfgjBEy2eQH0ustyenyXi1fi00OL7MI0iJ"
     );
     const apiurl = `${BASE_URL}/questions/payment/${userId}`;
-    console.log(apiurl);
+    // console.log(apiurl);
     const response = await axios.post(apiurl, { userId, ...plan });
     // console.log("response", response);
+
 
     const session = response.data;
 
     const result = await stripe.redirectToCheckout({
       sessionId: session.id,
     });
-    toast.success(`You have subscribed for ${plan} subscription plan`);
 
     if (result.error) {
       console.log(result.error);

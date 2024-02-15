@@ -141,12 +141,18 @@
 .subscription {
     width: "50%";
     display: flex;
+    padding: 10px;
     flex-direction: column;
+    width: 250px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
 .subscription .main-bar {
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
     font-weight: 700;
+
 }
 
 .subscription .main-bar .main-box {
@@ -169,6 +175,44 @@
     gap: 10px;
     padding: 3px;
     /* background-color: crimson; */
+}
+
+/* BadgeDetails.css */
+.badge-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.gold,
+.silver,
+.bronze {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.gold h2 {
+    color: #ffD700;
+}
+
+.silver h2 {
+    color: #C0C0C0;
+}
+
+.bronze h2 {
+    color: #CD7F32;
+}
+
+.gold p,
+.silver p,
+.bronze p {
+    margin: 5px 0;
 }
 
 
@@ -227,7 +271,7 @@
         padding: 10px;
         border-radius: 8px;
         display: flex;
-        flex-wrap: wrap;
+        flex-direction: column;
         gap: 3px;
         padding: 10px;
         justify-content: center;
@@ -260,30 +304,25 @@
 
 main {
     display: flex;
-    gap: 40px;
-    box-sizing: border-box;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
 
 .top {
     width: 250px;
-    /* Set the desired width */
-    padding: 20px;
     border-radius: 8px;
-    border: 1px solid lightgray;
-    background-color: #fff;
-    /* Set the background color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* Add a subtle box shadow */
+    margin: 10px;
+    text-align: center;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     margin-top: 20px;
     display: flex;
-    gap: 2px;
-    padding: 10px;
+    flex-direction: column;
+    align-items: center;
 }
 
 .top .counts p {
     font-size: 16px;
     font-weight: 700;
-    /* border: 2px solid; */
     margin-top: 3px;
 }
 
@@ -297,6 +336,12 @@ main {
     padding: 5px;
     color: #fffbe4;
     border: 1px solid #fffbe4;
-    opacity: 0.87;
-    margin-top: -5px;
+    margin-top: 5px;
+}
+
+@media screen and (max-width: 600px) {
+    .top {
+        width: 100%;
+        max-width: 300px;
+    }
 }

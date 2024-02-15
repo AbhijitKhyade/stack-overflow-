@@ -34,8 +34,9 @@ const updateProfile = async (req, res) => {
 const updateBadgeCountController = async (req, res) => {
     // console.log('Before try block');
     try {
-        // console.log("api hit");
-        const { id: _id } = req.params;
+        console.log("api hit");
+        const { _id } = req.params;
+        console.log(_id, "id in update");
         // Check if _id is a valid ObjectId
         if (!mongoose.Types.ObjectId.isValid(_id)) {
             return res.status(400).json({ error: 'Invalid user ID' });
@@ -67,28 +68,20 @@ const updateBadgeCountController = async (req, res) => {
                 }
             }
         ]);
-
         // Check if there are results and get the count
         const gold = goldCount.length > 0 ? goldCount[0].totalCount : 0;
-        const silverCount = await Question.aggregate([
-            {
-                $unwind: "$answer" // unwind the answer array
-            },
-            {
-                $match: {
-                    "answer.userId": "65ccbf5ccabbc9acce70b16d" // match the userId
-                }
-            },
-            {
-                $group: {
-                    _id: null,
-                    count: { $sum: 1 } // count the matched documents
-                }
-            }
-        ])
+        // console.log(gold);
+        const answerCount = await Question.find({
+            'answer.userId': _id
+        });
+
+        const silver = answerCount.length;
+        console.log("silver: ", silver);
+        console.log("silver: ", silver);
         const bronzeCount = await Question.countDocuments({ userId: _id });
-        silver = silverCount[0].count;
         // Update gold badge count and points
+        console.log("gold", gold);
+        console.log("bronze", bronzeCount);
         let goldBadge = 0, silverBadge = 0, bronzeBadge = 0, goldPoints = 0, silverPoints = 0, bronzePoints = 0;
         if (gold >= 5 && gold != 0) {
             goldBadge = Math.floor(gold / 5);
@@ -115,7 +108,7 @@ const updateBadgeCountController = async (req, res) => {
                 'badges.silver.points': silverPoints,
                 'badges.bronze.points': bronzePoints,
             },
-        });
+        }, { new: true });
 
         const user = await User.findById(_id);
         res.json({

@@ -6,8 +6,6 @@ const mongoDB = require("./config/db");
 const userRoutes = require("./routes/Users");
 const questionsRoutes = require("./routes/Questions");
 const answersRoutes = require("./routes/Answers");
-const cron = require("node-cron");
-const userModel = require("./models/userModel");
 
 const app = express();
 
@@ -16,7 +14,7 @@ dotenv.config();
 
 //database config
 mongoDB();
-
+app.set('trust proxy', true);
 //middleware
 app.use(express.json()); // Body parsing middleware
 app.use(cors()); // CORS middleware
@@ -35,38 +33,6 @@ app.use("/answer", answersRoutes);
 //PORT
 const PORT = process.env.PORT;
 
-const dailyJob = cron.schedule(
-  "0 0 * * *",
-  async () => {
-    console.log("Daily job started at:", new Date().toLocaleString());
-    try {
-      const users = await userModel.find();
-
-      for (const user of users) {
-        const todayDate = new Date().toLocaleDateString();
-        const lastAskedDate = user.lastAskedDate || null;
-
-        if (lastAskedDate !== todayDate) {
-          user.questionsPostedToday = {
-            count: 1,
-            lastAskedDate: todayDate,
-          };
-
-          await user.save();
-        }
-      }
-
-      console.log("Daily job completed successfully");
-      console.log("Daily job completed at:", new Date().toLocaleString());
-    } catch (error) {
-      console.error("Error in daily job:", error);
-    }
-  },
-  {
-    scheduled: true,
-    timezone: "Asia/Kolkata",
-  }
-);
 
 //run listen
 app.listen(PORT, () => {

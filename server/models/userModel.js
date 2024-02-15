@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const schedule = require('node-schedule');
 
 const UserSchema = mongoose.Schema({
     name: {
@@ -28,7 +29,7 @@ const UserSchema = mongoose.Schema({
         type: String,
     },
     subscription: {
-        type: String, // Free, Silver, Gold
+        type: String,
         default: 'Free',
     },
     subscriptionStartDate: {
@@ -82,5 +83,41 @@ const UserSchema = mongoose.Schema({
         },
     },
 });
+const User = mongoose.model('User', UserSchema);
+// Function to reset values based on the user's subscription
+const resetDailyValues = async () => {
+    try {
+        const users = await User.find();
 
-module.exports = mongoose.model('User', UserSchema);
+        console.log('Users before loop:', users);
+
+        for (const user of users) {
+            console.log('User before update:', user);
+
+            user.questionsPostedToday = 1;
+
+            if (user.subscription === 'Silver') {
+                user.questionsPostedSilver = 20;
+            } else if (user.subscription === 'Gold') {
+                user.questionsPostedGold = 50;
+            }
+
+            await user.save();
+
+            // console.log('User after update:', user);
+        }
+
+        console.log('Daily values reset successfully.');
+    } catch (error) {
+        console.error('Error resetting daily values:', error);
+    }
+};
+
+
+// Schedule the job to run at midnight every day
+const job = schedule.scheduleJob('0 0 * * *', () => {
+    resetDailyValues();
+});
+
+
+module.exports = User;

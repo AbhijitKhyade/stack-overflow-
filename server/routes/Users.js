@@ -19,6 +19,6 @@ router.post('/send-otp', sendOtp);
 router.post('/verify-otp', verifyOtp);
 
 //users badge
-router.post('/update-badge-count', updateBadgeCountController);
+router.post('/update-badge-count/:id', updateBadgeCountController);
 
 module.exports = router;

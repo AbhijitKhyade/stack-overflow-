@@ -1,5 +1,5 @@
 const express = require('express');
-const { askQuestionController, getAllQuestionsController, deleteQuestionController, voteQuestionController, subscriptionController, paymentController } = require('../controllers/Questions');
+const { askQuestionController, getAllQuestionsController, deleteQuestionController, voteQuestionController, subscriptionController, paymentController, updateUserPlanController } = require('../controllers/Questions');
 const auth = require('../middleware/auth');
 const checkQuestionLimits = require('../middleware/subscription');
 
@@ -13,8 +13,9 @@ router.delete('/delete/:id', auth, deleteQuestionController);
 router.patch('/vote/:id', auth, voteQuestionController);
 
 //subscribe routes
-router.get('/subscription/:userId', subscriptionController)
+router.get('/subscription/:userId', subscriptionController);
 router.post('/payment/:userId', paymentController);
+router.post('/payment-success', updateUserPlanController);
 
 
 module.exports = router;

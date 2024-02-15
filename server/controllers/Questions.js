@@ -43,7 +43,7 @@ const askQuestionController = async (req, res) => {
 
 const getAllQuestionsController = async (req, res) => {
   try {
-    const questionList = await Questions.find().limit(10);
+    const questionList = await Questions.find();
     res.status(200).json(questionList);
   } catch (error) {
     console.log(error);
@@ -179,21 +179,22 @@ const paymentController = async (req, res) => {
       //   allowed_countries: ['US', 'CA', 'GB', 'IN'], // Add other allowed countries as needed
       // },
     });
-    console.log("Session:", session);
+    // console.log("Session:", session);
 
-    // Update user's subscription information
-    const user = await userModel.findById(userId);
-    // console.log("in controller:", user);
-    user.subscription = name; // Assuming plan name is Free, Silver, or Gold
-    name === "Silver"
-      ? (user.questionsPostedSilver += plan_que)
-      : (user.questionsPostedGold += plan_que);
-
-    // console.log("subscription:", user.subscription);
-    user.subscriptionStartDate = new Date();
-    await user.save();
-    const userUp = await userModel.findById(userId);
-    console.log("user updated", userUp);
+    
+    try {
+      // Update user's subscription plan
+      await updateUserPlanController({
+        body: {
+          name,
+          plan_que,
+          userId,
+        },
+      });
+    } catch (error) {
+      console.error("Error updating user plan:", error.message);
+      throw new Error("Failed to update user plan.");
+    }
 
     res.status(200).json({ success: true, id: session.id });
   } catch (error) {
@@ -202,6 +203,34 @@ const paymentController = async (req, res) => {
   }
 };
 
+const updateUserPlanController = async (req) => {
+  try {
+    const { name, plan_que, userId } = req.body;
+    // console.log(plan_que);
+
+    // Ensure userModel is properly imported
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+      throw new Error("User not found.");
+    }
+
+    // Update user subscription and questionsPosted based on the plan
+    user.subscription = name;
+    name === "Silver" ? (user.questionsPostedSilver += plan_que) : (user.questionsPostedGold += plan_que);
+    user.subscriptionStartDate = new Date();
+    await user.save();
+
+    // Return a success message
+    return { success: true, message: "Subscription plan updated successfully." };
+  } catch (error) {
+    console.error("Error updating subscription:", error.message);
+    throw new Error("Failed to update subscription.");
+  }
+};
+
+
+
 module.exports = {
   askQuestionController,
   getAllQuestionsController,
@@ -209,4 +238,5 @@ module.exports = {
   voteQuestionController,
   subscriptionController,
   paymentController,
+  updateUserPlanController
 };

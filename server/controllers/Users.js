@@ -30,47 +30,83 @@ const updateProfile = async (req, res) => {
         res.status(405).json({ message: error.message });
     }
 }
-let goldBadge = 0, silverBadge = 0, bronzeBadge = 0, goldPoints = 0, silverPoints = 0, bronzePoints = 0;
 
 const updateBadgeCountController = async (req, res) => {
-
     // console.log('Before try block');
     try {
-        console.log("api hit");
-        const { userId } = req.body;
-        console.log(userId);
-        const goldCount = await Question.countDocuments({ userId, 'upVote.length': { $gt: 5 } });
-        const silverCount = await Question.countDocuments({ 'answer.userId': userId });
-        const bronzeCount = await Question.countDocuments({ userId });
-        console.log(`User ${userId} has asked ${bronzeCount} questions.`);
-        // console.log(`User ${userId} has answered ${silverCount} questions.`);
-        // console.log(`User ${userId} has voted ${goldCount} questions.`);
-        // console.log("before", goldCount, silverCount, bronzeCount);
+        // console.log("api hit");
+        const { id: _id } = req.params;
+        // Check if _id is a valid ObjectId
+        if (!mongoose.Types.ObjectId.isValid(_id)) {
+            return res.status(400).json({ error: 'Invalid user ID' });
+        }
+        const goldCount = await Question.aggregate([
+            {
+                $match: {
+                    userId: _id,
+                    $or: [
+                        { 'upVote': { $exists: true, $not: { $size: 0 } } },
+                        { 'downVote': { $exists: true, $not: { $size: 0 } } }
+                    ]
+                }
+            },
+            {
+                $project: {
+                    count: {
+                        $add: [
+                            { $cond: [{ $gte: [{ $size: '$upVote' }, 5] }, { $size: '$upVote' }, 0] },
+                            { $cond: [{ $gte: [{ $size: '$downVote' }, 5] }, { $size: '$downVote' }, 0] }
+                        ]
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    totalCount: { $sum: '$count' }
+                }
+            }
+        ]);
 
+        // Check if there are results and get the count
+        const gold = goldCount.length > 0 ? goldCount[0].totalCount : 0;
+        const silverCount = await Question.aggregate([
+            {
+                $unwind: "$answer" // unwind the answer array
+            },
+            {
+                $match: {
+                    "answer.userId": "65ccbf5ccabbc9acce70b16d" // match the userId
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    count: { $sum: 1 } // count the matched documents
+                }
+            }
+        ])
+        const bronzeCount = await Question.countDocuments({ userId: _id });
+        silver = silverCount[0].count;
         // Update gold badge count and points
-        if (goldCount >= 5 && goldCount != 0) {
-            goldBadge = Math.floor(goldCount / 5);
+        let goldBadge = 0, silverBadge = 0, bronzeBadge = 0, goldPoints = 0, silverPoints = 0, bronzePoints = 0;
+        if (gold >= 5 && gold != 0) {
+            goldBadge = Math.floor(gold / 5);
             goldPoints = goldBadge * 10;
         }
-
         // Update silver badge count and points
-        if (silverCount >= 4 && silverCount != 0) {
-            silverBadge = Math.floor(silverCount / 4);
+        if (silver >= 4 && silver != 0) {
+            silverBadge = Math.floor(silver / 4);
             silverPoints = silverBadge * 5;
         }
-
         // Update bronze badge count and points
-        
         if (bronzeCount >= 3 && bronzeCount != 0) {
-            console.log("bronze");
+            // console.log("bronze");
             bronzeBadge = Math.floor(bronzeCount / 3);
             bronzePoints = bronzeBadge * 3;
         }
-
-        // console.log("after", goldBadge, silverBadge, bronzeBadge);
-        // console.log("points", goldPoints, silverPoints, bronzePoints);
-
-        await User.findByIdAndUpdate(userId, {
+        // Update user document with badge counts and points
+        await User.findByIdAndUpdate(_id, {
             $set: {
                 'badges.gold.count': goldBadge,
                 'badges.silver.count': silverBadge,
@@ -81,13 +117,9 @@ const updateBadgeCountController = async (req, res) => {
             },
         });
 
+        const user = await User.findById(_id);
         res.json({
-            goldBadge,
-            silverBadge,
-            bronzeBadge,
-            goldPoints,
-            silverPoints,
-            bronzePoints,
+            data: user
         });
     } catch (error) {
         console.error('Error updating badge counts:', error);

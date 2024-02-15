@@ -5,14 +5,13 @@ import AboutAuth from "./AboutAuth";
 import { signup, login } from "../../actions/auth";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const Auth = () => {
   const [isSignUp, setSignUp] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setLoading] = useState(false); // Add loading state
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,84 +20,41 @@ const Auth = () => {
     setSignUp(!isSignUp);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Set loading to true while submitting
+    setLoading(true);
 
     if (!email && !password) {
       // toast.error("Enter email and password");
+      setLoading(false); // Reset loading state
+      return;
     }
     if (isSignUp) {
       if (!name) {
         alert("Enter name please")
-        // toast.error("Enter your name", {
-        //   position: "top-left",
-        //   autoClose: 1500,
-        //   hideProgressBar: false,
-        //   closeOnClick: true,
-        //   pauseOnHover: true,
-        //   draggable: true,
-        //   progress: undefined,
-        //   theme: "light",
-        // });
+        setLoading(false); // Reset loading state
+        return;
       }
       try {
-        const response = dispatch(signup({ name, email, password }, navigate));
-        console.log("response: ",response);
+        const response = await dispatch(signup({ name, email, password }, navigate));
+        console.log("response: ", response);
       } catch (error) {
         console.log(error.message);
       }
     } else {
       try {
-        const response =  dispatch(login({ email, password }, navigate));
-        console.log("response: ",response);
+        const response = await dispatch(login({ email, password }, navigate));
+        console.log("response: ", response);
       } catch (error) {
         console.log(error.message);
       }
     }
+
+    // Reset loading state after submission completes
+    setLoading(false);
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   if (!email && !password) {
-  //     toast.error("Enter email and password");
-  //     return;
-  //   } else if (!password) {
-  //     toast.error("Enter your password");
-  //     return;
-  //   } else if (!email) {
-  //     toast.error("Enter your email");
-  //     return;
-  //   }
-
-  //   try {
-  //     if (isSignUp) {
-  //       if (!name) {
-  //         toast.error("Enter your name to continue");
-  //       } else {
-  //         const response = await dispatch(
-  //           signup({ name, email, password }, navigate)
-  //         );
-
-  //         if (response && response.success) {
-  //           toast.error("Registration failed");
-  //         } else {
-  //           toast.success("Registration successful");
-  //         }
-  //       }
-  //     } else {
-  //       const response = await dispatch(login({ email, password }, navigate));
-  //       if (response && response.success) {
-  //         toast.error("Login failed");
-  //       } else {
-  //         toast.success("Login successful");
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error("Error during authentication:", error);
-  //     toast.error("An error occurred during authentication");
-  //   }
-  // };
 
   return (
     <section className="auth-section">
@@ -175,8 +131,8 @@ const Auth = () => {
               </p>
             </label>
           )}
-          <button type="submit" className="auth-btn">
-            {isSignUp ? "Sign Up" : "Log In"}
+          <button type="submit" className="auth-btn" disabled={isLoading}>
+            {isLoading ? "Loading..." : (isSignUp ? "Sign Up" : "Log In")}
           </button>
           {isSignUp && (
             <p style={{ color: "#666767", fontSize: "13px" }}>

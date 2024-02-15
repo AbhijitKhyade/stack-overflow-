@@ -83,6 +83,7 @@ const QuestionDetails = () => {
             userId: User.result._id,
           })
         );
+        setAnswer("");
       }
     }
   };

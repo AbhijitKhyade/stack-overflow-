@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import "./Subscribe.css";
@@ -26,7 +26,10 @@ const Subscribe = () => {
     },
   ];
 
-  const makePayment = async (plan, userId) => {
+  const [loading, setLoading] = useState(false); // Individual loading state for each plan
+
+  const makePayment = async (plan, userId, index) => {
+    setLoading(true); // Set loading state to true for the clicked plan
     const stripe = await loadStripe(
       "pk_test_51OaW4BSJ68wLt3sl9hV9cuE5huHVJZgpWzXHhVI4BqeApWbNE5ZDCqtYE7vzoetadfgjBEy2eQH0ustyenyXi1fi00OL7MI0iJ"
     );
@@ -45,6 +48,7 @@ const Subscribe = () => {
     if (result.error) {
       console.log(result.error);
     }
+    setLoading(false); // Set loading state back to false after payment process completes
   };
 
   return (
@@ -61,8 +65,8 @@ const Subscribe = () => {
             <p>{plan.price}</p>
             <p>{plan.description}</p>
             <div className="btn">
-              <button onClick={() => makePayment(plan, userId)}>
-                Subscribe
+              <button onClick={() => makePayment(plan, userId, index)} disabled={loading && loading === index}>
+                {loading && loading === index ? 'Loading...' : 'Subscribe'}
               </button>
             </div>
           </div>

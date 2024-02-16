@@ -262,6 +262,7 @@
     .navbar {
         width: 100%;
         padding: 0px;
+        overflow-x: auto;
     }
 
     .nav-logo {

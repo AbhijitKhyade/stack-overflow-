@@ -7,6 +7,7 @@
     margin-top: 50px;
     display: flex;
     align-items: flex-start;
+    overflow-x: auto;
     justify-content: space-between;
 }
 
@@ -109,7 +110,7 @@
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(243, 241, 241, 0.1);
     position: relative;
 }
 
@@ -218,7 +219,7 @@
 
 @media (max-width:600px) {
     .edit-profile-btn {
-        padding: 5px 4px;
+        padding: 6px 4px;
         width: 160px;
         font-size: 18px;
     }
@@ -246,18 +247,19 @@
     }
 
     .login-history-container {
-        border: 2px solid;
+        /* border: 2px solid; */
         width: 100%;
+        overflow-x: auto;
     }
 
     .login-history-table {
-        font-size: 11px;
-        margin: 10px 0px 10px 0px;
+        font-size: 13px;
+        margin: 10px 0px;
     }
 
     .login-history-table th,
     .login-history-table td {
-        font-size: 11px;
+        font-size: 13px;
     }
 
     main {

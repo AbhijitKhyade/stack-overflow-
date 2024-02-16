@@ -94,27 +94,36 @@
     .main-bar {
         width: 100%;
     }
+
     .display-tags-time .display-tags {
         display: flex;
         flex-wrap: wrap;
     }
-    
-    
+
+
 }
 
 @media screen and (max-width: 740px) {
     .main-bar {
         width: 100%;
-        font-size: 13px;
+        font-size: 14px;
+        margin-top: 35px;
     }
+
     .display-question-container .display-votes-ans {
         padding: 10px;
     }
+
     .display-tags-time .display-tags p {
         margin: 2px;
         padding: 4px;
         font-size: 11px;
         background-color: #edeff0;
         color: #39739d;
+    }
+
+    .main-bar-header .ask-btn {
+        padding: 7px 15px;
+
     }
 }
